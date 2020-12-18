@@ -1,9 +1,13 @@
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -24,6 +28,8 @@ public class TaskProject {
             switch (option){
                 case "add":
                     System.out.println("Selected 'add'");
+                    add(taskArray());
+                    menu();
                     break;
 
                 case "remove":
@@ -95,7 +101,30 @@ public class TaskProject {
 
         }
 
+    public static void add(String [][] array){
+        Scanner scan = new Scanner(System.in);
+        File file = new File("tasks.csv");
+//        String[] newTask = new String[0];
+        StringBuilder sb = new StringBuilder();
 
+//        Pobranie danych od użytkownika i zbudowanie stringa
+        System.out.println("Please add task decription");
+        sb.append("\n").append(scan.nextLine()).append(", ");
+
+        System.out.println("Please add task due date");
+        sb.append(scan.nextLine()).append(", ");
+
+        System.out.println("Is your task important?");
+        sb.append(scan.nextLine());
+
+//        Zapis stringa do pliku
+        try {
+            FileUtils.writeStringToFile(file, sb.toString(),"ISO-8859-1",true);
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        
+    }
 
     public static String[][] addNewItemToMultiArray(String[][] array, String[] element) {
         // coś w tym nie działa tak jak trzeba
