@@ -16,6 +16,7 @@ public class TaskProject {
         menu();
     }
 
+
     public static void menu(){
         Scanner scan = new Scanner(System.in);
 
@@ -53,6 +54,7 @@ public class TaskProject {
             }
     }
 
+
     public static String[][] taskArray() {
         //sprawdza ile jest linii w pliku i tworzy tablice z taką ilością
 
@@ -87,7 +89,9 @@ public class TaskProject {
 
     }
 
+
     public static void list(String[][] array){
+//        wyświetla tablicę
             StringBuilder sb = new StringBuilder();
             sb.append("Nr\t Description \t \t \t Date \t is Important?\n");
             for (int i = 0;i < array.length; i++){
@@ -101,10 +105,10 @@ public class TaskProject {
 
         }
 
+
     public static void add(String [][] array){
         Scanner scan = new Scanner(System.in);
         File file = new File("tasks.csv");
-//        String[] newTask = new String[0];
         StringBuilder sb = new StringBuilder();
 
 //        Pobranie danych od użytkownika i zbudowanie stringa
@@ -123,23 +127,8 @@ public class TaskProject {
         }catch (IOException ex){
             ex.printStackTrace();
         }
-        
+
     }
-
-    public static String[][] addNewItemToMultiArray(String[][] array, String[] element) {
-        // coś w tym nie działa tak jak trzeba
-        String[][] newArray = new String[array.length + 1][4];
-        for (int i = 0; i < newArray.length - 1; i++){
-            for (int j = 0; j < newArray[i].length; j++){
-                newArray[i][j] = array[i][j];
-            }
-        }
-        newArray[newArray.length - 1] = element;
-        return newArray;
-    }
-
-
-
 
 
 }
