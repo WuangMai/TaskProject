@@ -35,6 +35,8 @@ public class TaskProject {
 
                 case "remove":
                     System.out.println("Selected 'remove'");
+                    remove(taskArray());
+                    menu();
                     break;
 
                 case "list":
@@ -130,5 +132,35 @@ public class TaskProject {
 
     }
 
+
+    public static void saveFile(String[][] array){
+
+
+    }
+
+    public static void remove(String [][] array){
+        Scanner scan = new Scanner(System.in);
+        File file = new File("tasks.csv");
+        StringBuilder sb = new StringBuilder();
+        
+        System.out.println("Please select number to remove");
+        int numToDel = scan.nextInt();
+        array = ArrayUtils.remove(array, numToDel);
+
+        for (int i = 0; i < array.length; i++){
+            for(int j = 0; j < array[i].length; j++){
+                sb.append(array[i][j]).append(", ");
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            sb.append("\n");
+            try {
+                FileUtils.writeStringToFile(file, sb.toString(),"ISO-8859-1",false);
+            }catch (IOException ex){
+                ex.printStackTrace();
+            }
+        }
+
+
+    }
 
 }
