@@ -7,7 +7,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -23,7 +28,7 @@ public class TaskProject {
         System.out.println(ConsoleColors.PURPLE  + "TASK PROJECT v0.1" + ConsoleColors.RESET);
         System.out.println("add\nremove\nlist\nexit");
         System.out.print(ConsoleColors.BLUE + "Please select an option: ");
-        System.out.println(ConsoleColors.RESET);
+        System.out.print(ConsoleColors.RESET);
         String option = scan.nextLine();
 
             switch (option){
@@ -117,11 +122,18 @@ public class TaskProject {
         System.out.println("Please add task decription");
         sb.append("\n").append(scan.nextLine()).append(", ");
 
-        System.out.println("Please add task due date");
-        sb.append(scan.nextLine()).append(", ");
 
-        System.out.println("Is your task important?");
-        sb.append(scan.nextLine());
+//        Pobiera i dodaje datę
+        sb.append(verifiedDate()).append(", ");
+
+        System.out.println("Is your task important? True / False");
+        if (scan.hasNextBoolean()) {
+            sb.append(scan.nextBoolean());
+        }else {
+            System.out.println("Must choose true or false");
+            menu();
+
+        }
 
 //        Zapis stringa do pliku
         try {
@@ -132,8 +144,30 @@ public class TaskProject {
 
     }
 
+    public static String verifiedDate(){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Please add task due date in format YYYY-MM-DD");
+
+
+        String input;
+        while(true) {
+                input = scan.nextLine();
+
+            try {
+                LocalDate.parse(input);
+
+                if (LocalDate.now().isBefore(LocalDate.parse(input))){
+                    break;
+                }else throw new DateTimeException("Wrong date");
+            } catch (DateTimeException ex) {
+                System.out.println("Wrong date or date format. Please use YYYY-MM-DD format");
+            }
+        }
+        return input;
+    }
 
     public static void saveFile(String[][] array){
+
 
 
     }
@@ -142,11 +176,13 @@ public class TaskProject {
         Scanner scan = new Scanner(System.in);
         File file = new File("tasks.csv");
         StringBuilder sb = new StringBuilder();
-        
+
+//        Pobranie wartości od użytkownika i usunięcie z tablicy
         System.out.println("Please select number to remove");
         int numToDel = scan.nextInt();
         array = ArrayUtils.remove(array, numToDel);
 
+//        zapis nowej tablicy do pliku
         for (int i = 0; i < array.length; i++){
             for(int j = 0; j < array[i].length; j++){
                 sb.append(array[i][j]).append(", ");
