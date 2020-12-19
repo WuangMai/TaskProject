@@ -118,22 +118,27 @@ public class TaskProject {
         File file = new File("tasks.csv");
         StringBuilder sb = new StringBuilder();
 
-//        Pobranie danych od użytkownika i zbudowanie stringa
-        System.out.println("Please add task decription");
-        sb.append("\n").append(scan.nextLine()).append(", ");
+//        Pobranie danych od użytkownika i zbudowanie stringa + walidacja przecinka
+
+        String taskName = ",";
+        while(taskName.indexOf(',') != -1){
+            System.out.println("Please add task decription. Please do NOT use ','(comma)");
+            taskName = scan.nextLine();
+        }
+        sb.append("\n").append(taskName).append(", ");
 
 
 //        Pobiera i dodaje datę
         sb.append(verifiedDate()).append(", ");
 
+//        Pobiera i dodaje ważność zadania
         System.out.println("Is your task important? True / False");
-        if (scan.hasNextBoolean()) {
-            sb.append(scan.nextBoolean());
-        }else {
+        while(!scan.hasNextBoolean()){
             System.out.println("Must choose true or false");
-            menu();
-
+            scan.next();
         }
+            sb.append(scan.nextBoolean());
+
 
 //        Zapis stringa do pliku
         try {
@@ -166,9 +171,8 @@ public class TaskProject {
         return input;
     }
 
+
     public static void saveFile(String[][] array){
-
-
 
     }
 
