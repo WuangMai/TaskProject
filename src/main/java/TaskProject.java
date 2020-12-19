@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -31,7 +30,7 @@ public class TaskProject {
             switch (option){
                 case "add":
                     System.out.println("Selected 'add'");
-                    add(taskArray());
+                    add();
                     menu();
                     break;
 
@@ -52,8 +51,7 @@ public class TaskProject {
                     break;
 
                     default:
-                        System.out.println("Wrong command");
-                        System.out.print("\n\n");
+                        System.out.println("Wrong command\n");
                         menu();
             }
     }
@@ -65,7 +63,7 @@ public class TaskProject {
         Path path = Paths.get("tasks.csv");
         long numLines = 0;
         try {
-            for (String line : Files.readAllLines(path)) {
+            for (String ignored : Files.readAllLines(path)) {
                 numLines += 1;
             }
         } catch (IOException ex) {
@@ -110,7 +108,7 @@ public class TaskProject {
         }
 
 
-    public static void add(String [][] array){
+    public static void add(){
         Scanner scan = new Scanner(System.in);
         File file = new File("tasks.csv");
         StringBuilder sb = new StringBuilder();
@@ -175,9 +173,9 @@ public class TaskProject {
         File file = new File("tasks.csv");
         StringBuilder sb = new StringBuilder();
 
-//        Pobranie wartości od użytkownika i usunięcie z tablicy
+//        Pobranie poprawnej wartości od użytkownika i usunięcie z tablicy
 
-        int numToDel = -1;
+        int numToDel;
         System.out.println("Please select number to remove");
 
         while(!scan.hasNextInt()) {
@@ -190,9 +188,7 @@ public class TaskProject {
             while (numToDel < 0 || numToDel >= array.length){
                 System.out.println("Select proper task number");
                 numToDel = scan.nextInt();
-
             }
-
 
         array = ArrayUtils.remove(array, numToDel);
 
@@ -203,15 +199,13 @@ public class TaskProject {
             }
             sb.deleteCharAt(sb.lastIndexOf(","));
 
-            sb.append("\n");
+            if (i != array.length-1) {sb.append("\n");}
+
             try {
                 FileUtils.writeStringToFile(file, sb.toString(),"ISO-8859-1",false);
             }catch (IOException ex){
                 ex.printStackTrace();
             }
         }
-
-
     }
-
 }
