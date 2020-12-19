@@ -7,12 +7,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -104,7 +101,7 @@ public class TaskProject {
             for (int i = 0;i < array.length; i++){
                 sb.append(i).append(" : ");
                 for (int j = 0; j< array[i].length; j++){
-                    sb.append(array[i][j]);
+                    sb.append(array[i][j]).append(" ");
                 }
                 sb.append("\n");
             }
@@ -125,11 +122,11 @@ public class TaskProject {
             System.out.println("Please add task decription. Please do NOT use ','(comma)");
             taskName = scan.nextLine();
         }
-        sb.append("\n").append(taskName).append(", ");
+        sb.append("\n").append(taskName).append(",");
 
 
 //        Pobiera i dodaje datę
-        sb.append(verifiedDate()).append(", ");
+        sb.append(verifiedDate()).append(",");
 
 //        Pobiera i dodaje ważność zadania
         System.out.println("Is your task important? True / False");
@@ -148,6 +145,7 @@ public class TaskProject {
         }
 
     }
+
 
     public static String verifiedDate(){
         Scanner scan = new Scanner(System.in);
@@ -172,26 +170,39 @@ public class TaskProject {
     }
 
 
-    public static void saveFile(String[][] array){
-
-    }
-
     public static void remove(String [][] array){
         Scanner scan = new Scanner(System.in);
         File file = new File("tasks.csv");
         StringBuilder sb = new StringBuilder();
 
 //        Pobranie wartości od użytkownika i usunięcie z tablicy
+
+        int numToDel = -1;
         System.out.println("Please select number to remove");
-        int numToDel = scan.nextInt();
+
+        while(!scan.hasNextInt()) {
+            System.out.println("Select proper task NUMBER");
+            scan.next();
+        }
+
+            numToDel = scan.nextInt();
+
+            while (numToDel < 0 || numToDel >= array.length){
+                System.out.println("Select proper task number");
+                numToDel = scan.nextInt();
+
+            }
+
+
         array = ArrayUtils.remove(array, numToDel);
 
 //        zapis nowej tablicy do pliku
         for (int i = 0; i < array.length; i++){
             for(int j = 0; j < array[i].length; j++){
-                sb.append(array[i][j]).append(", ");
+                sb.append(array[i][j]).append(",");
             }
             sb.deleteCharAt(sb.lastIndexOf(","));
+
             sb.append("\n");
             try {
                 FileUtils.writeStringToFile(file, sb.toString(),"ISO-8859-1",false);
